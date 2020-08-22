@@ -1,0 +1,34 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-img class="logo" [src]="LogoSrc" slot="start"></ion-img>
+    <ion-title class="pageTitle"> {{ Title }} </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+
+  <!-- Photo Gallery List of Sliding Items -->
+  <ion-list class="ion-no-padding">
+    <ion-item-sliding *ngFor="let gallery of loadGalleries(); let i = index;">
+      <ion-item lines="full" [routerLink]="['./', gallery.id]">
+        <ion-thumbnail slot="start">
+          <ion-img [src]="gallery.src"></ion-img>
+        </ion-thumbnail>
+        <h2> {{ gallery.name }}</h2>
+      </ion-item>
+      <ion-item-options side="end">
+        <button (click)="deleteGallery(i)" ion-button icon-start>
+          <ion-icon name="trash"></ion-icon>
+          Delete
+        </button>
+      </ion-item-options>
+    </ion-item-sliding>
+  </ion-list>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button (click)="addGalleryPrompt()">
+        <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+</ion-content>

@@ -1,0 +1,28 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="home" text=""></ion-back-button>
+    </ion-buttons>
+    <ion-title class="pageTitle"> {{ loadedGallery.name }} </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-searchbar inputmode="search"></ion-searchbar>
+
+  <ion-grid >
+    <ion-row>
+      <ion-col size="4" 
+      *ngFor="let photo of loadedGallery.contents; let i = index">
+        <ion-img src="{{ photo.imgSrc }}"></ion-img>
+    </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button (click)="addPhotoPrompt(loadedGallery.id)">
+        <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+  
+</ion-content>
