@@ -9,7 +9,7 @@
 
 <ion-content>
   <ion-slides pager="true" [options]="options">
-    <ion-slide *ngFor="let image of loadedGallery.contents; let i = index;">
+    <ion-slide *ngFor="let image of loadedGallery.contents | slice:1; let i = index;">
       <div class="slide-item" text-left>
         <ion-img [src]="image.imgSrc"></ion-img>
         <ion-grid>

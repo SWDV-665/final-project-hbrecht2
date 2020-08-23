@@ -6,6 +6,7 @@ import { WebView } from '@ionic-native/ionic-webview/ngx';
 import {Observable} from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import {Subject} from 'rxjs';
+import { allowedNodeEnvironmentFlags } from 'process';
 
 @Injectable({
   providedIn: "root",
@@ -56,17 +57,9 @@ export class GalleryService {
   getGallery(galleryID: string | number) {
     return {
       ...this.galleries.find((gallery) => {
-        return gallery.id == galleryID;
+        return gallery._id == galleryID;
       }),
     };
-  }
-
-  searchGallery(searchTerm, galleryID){
-    const gallery = this.galleries.find(gallery => gallery.id == galleryID);
-
-    return gallery.contents.filter(photo => {
-      return photo.imgName.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1;
-    })
   }
 
   deleteGallery(id) {
@@ -119,10 +112,14 @@ export class GalleryService {
 
     let newPhoto = {
       imgName: name,
-      imgDate: "August 22, 2019",
       imgDescription: description,
       imgSrc: imgSrc,
     };
-    this.galleries.find((x) => x.id == galleryID).contents.push(newPhoto);
+    
+    this.http.put(this.baseURL + '/api/galleries/' + galleryID, newPhoto).subscribe(res => {
+      this.galleries = res;
+      this.dataChangedSubject.next(true);
+    });
+
   }
 }
