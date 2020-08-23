@@ -12,6 +12,7 @@ export class GalleryPage implements OnInit {
   public searchTerm = "";
   galleryID: any;
   loadedGallery: any;
+  searchedGallery: any;
 
   constructor(private activatedRoute: ActivatedRoute, private galleryService: GalleryService, private alertController: AlertController) { 
   }
@@ -54,11 +55,11 @@ export class GalleryPage implements OnInit {
       this.loadedGallery = this.galleryService.getGallery(this.galleryID);
     })
 
-    this.setSearchedPhotos(this.searchTerm)
   }
 
   setSearchedPhotos(searchTerm) {
-    this.loadedGallery = this.galleryService.searchGallery(searchTerm, this.galleryID);
+    this.searchedGallery = this.galleryService.searchGallery(searchTerm, this.galleryID);
+    console.log(this.searchedGallery);
   }
 
 }

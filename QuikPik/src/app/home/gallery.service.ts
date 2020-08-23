@@ -1,106 +1,22 @@
 import { Injectable } from "@angular/core";
+import { HttpClient } from '@angular/common/http';
 import { Camera, CameraOptions } from "@ionic-native/camera/ngx";
 import { File } from '@ionic-native/file/ngx';
 import { WebView } from '@ionic-native/ionic-webview/ngx';
+import {Observable} from 'rxjs';
+import { map, catchError } from 'rxjs/operators';
+import {Subject} from 'rxjs';
 
 @Injectable({
   providedIn: "root",
 })
 export class GalleryService {
-  id = 2;
-  imgID = 10;
+  galleries: any = [];
+  
+  dataChanged$: Observable<boolean>;
+  private dataChangedSubject: Subject<boolean>;
 
-  galleries = [
-    {
-      id: 1,
-      name: "Sunflower Field - Summer 2020",
-      src: "https://parkseed.com/images/xxl/52081-pk-p1.jpg",
-      contents: [
-        {
-          imgID: 1,
-          imgName: "Sunflower 1",
-          imgDate: "July 29, 2020",
-          imgDescription: "Trip to sunflower field in July of 2020",
-          imgSrc:
-            "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQjgiaMX8VUHR1J58eHJhD41sn4fETYnJogDQ&usqp=CAU",
-        },
-        {
-          imgID: 2,
-          imgName: "Sunflower 2",
-          imgDate: "July 29, 2020",
-          imgDescription: "Trip to sunflower field in July of 2020",
-          imgSrc:
-            "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQjgiaMX8VUHR1J58eHJhD41sn4fETYnJogDQ&usqp=CAU",
-        },
-        {
-          imgID: 2,
-          imgName: "Sunflower 3",
-          imgDate: "July 29, 2020",
-          imgDescription: "Trip to sunflower field in July of 2020",
-          imgSrc:
-            "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQjgiaMX8VUHR1J58eHJhD41sn4fETYnJogDQ&usqp=CAU",
-        },
-        {
-          imgID: 2,
-          imgName: "Sunflower 4",
-          imgDate: "July 29, 2020",
-          imgDescription: "Trip to sunflower field in July of 2020",
-          imgSrc:
-            "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQjgiaMX8VUHR1J58eHJhD41sn4fETYnJogDQ&usqp=CAU",
-        },
-        {
-          imgID: 2,
-          imgName: "Sunflower 5",
-          imgDate: "July 29, 2020",
-          imgDescription: "Trip to sunflower field in July of 2020",
-          imgSrc:
-            "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQjgiaMX8VUHR1J58eHJhD41sn4fETYnJogDQ&usqp=CAU",
-        },
-        {
-          imgID: 2,
-          imgName: "Sunflower 6",
-          imgDate: "July 29, 2020",
-          imgDescription: "Trip to sunflower field in July of 2020",
-          imgSrc:
-            "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQjgiaMX8VUHR1J58eHJhD41sn4fETYnJogDQ&usqp=CAU",
-        },
-        {
-          imgID: 2,
-          imgName: "Sunflower 7",
-          imgDate: "July 29, 2020",
-          imgDescription: "Trip to sunflower field in July of 2020",
-          imgSrc:
-            "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQjgiaMX8VUHR1J58eHJhD41sn4fETYnJogDQ&usqp=CAU",
-        },
-        {
-          imgID: 2,
-          imgName: "Sunflower 8",
-          imgDate: "July 29, 2020",
-          imgDescription: "Trip to sunflower field in July of 2020",
-          imgSrc:
-            "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQjgiaMX8VUHR1J58eHJhD41sn4fETYnJogDQ&usqp=CAU",
-        },
-        {
-          imgID: 2,
-          imgName: "Sunflower 9",
-          imgDate: "July 29, 2020",
-          imgDescription: "Trip to sunflower field in July of 2020",
-          imgSrc:
-            "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQjgiaMX8VUHR1J58eHJhD41sn4fETYnJogDQ&usqp=CAU",
-        },
-        {
-          imgID: 2,
-          imgName: "Sunflower 10",
-          imgDate: "July 29, 2020",
-          imgDescription: "Trip to sunflower field in July of 2020",
-          imgSrc:
-            "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQjgiaMX8VUHR1J58eHJhD41sn4fETYnJogDQ&usqp=CAU",
-        }
-      ],
-    },
-  ];
-
-  constructor(private camera: Camera, private file: File, private webview: WebView) {}
+  baseURL = "https://photogalleryserver.herokuapp.com";
 
   options: CameraOptions = {
     quality: 100,
@@ -108,33 +24,33 @@ export class GalleryService {
     encodingType: this.camera.EncodingType.JPEG,
   };
 
-  async captureImage(name) {
-    const tempImage = await this.camera.getPicture(this.options);
+  constructor(private camera: Camera, private file: File, private webview: WebView, private http: HttpClient) {
+    this.dataChangedSubject = new Subject<boolean>();
+    this.dataChanged$ = this.dataChangedSubject.asObservable();
+  }
 
-    // Get file name of temp image 
-    const tempFilename = tempImage.substr(tempImage.lastIndexOf("/") + 1);
-    //Get file extension 
-    const fileExt = tempImage.substr(tempImage.lastIndexOf("."))
-    //Get full path minus file name of temp image
-    const tempBaseFilesystemPath = tempImage.substr(0, tempImage.lastIndexOf("/") + 1);
-    // Get the Data directory on the device
-    const newBaseFilesystemPath = this.file.dataDirectory;
+  getAllGalleries(): Observable<object[]> {
+    return this.http.get(this.baseURL + '/api/galleries').pipe(
+      map(this.extractData),
+      catchError(this.handleError)
+    );
+  }
 
-    var dateTime = new Date;
-    var dateString = dateTime.toString().replace(/\s/g, '');
-
-    name = name.replace(/\s/g, '')
-    const newFileName = name + dateString + fileExt;
-
-    await this.file.copyFile(tempBaseFilesystemPath, tempFilename, 
-      newBaseFilesystemPath, newFileName);
-
-    const storedPhotoPath = newBaseFilesystemPath + newFileName;
-    return this.webview.convertFileSrc(storedPhotoPath);
-  } 
-
-  getAllGalleries() {
-    return [...this.galleries];
+  private extractData(res: Response) {
+    let body = res;
+    return (body || {}) as object[];
+    }
+  
+  private handleError(error: Response | any) {
+    let errMsg: string;
+    if (error instanceof Response) {
+      const err = error || '';
+      errMsg = `${error.status} - ${error.statusText || ''} ${err}`;
+    }else{
+      errMsg = error.message ? error.message : error.toString();
+    }
+    console.error(errMsg);
+    return Observable.throw(errMsg);
   }
 
   getGallery(galleryID: string | number) {
@@ -153,28 +69,30 @@ export class GalleryService {
     })
   }
 
-  deleteGallery(index) {
-    this.galleries.splice(index, 1);
-  }
+  deleteGallery(id) {
+    this.http.delete(this.baseURL + '/api/galleries/' + id).subscribe(res => {
+    this.galleries = res;
+    this.dataChangedSubject.next(true);
+  });
+}
 
   addGallery(galleryName) {
-    this.id += 1;
 
-    let src =
-      "https://www.jing.fm/clipimg/detail/32-326482_albums-clip-art-panda-free-images-albumclipart-.png";
+    let src = "../assets/quikpiklogo.png";
 
     let newGallery = {
-      id: this.id,
       name: galleryName,
       src: src,
       contents: [],
     };
-    this.galleries.push(newGallery);
+    
+    this.http.post(this.baseURL + '/api/galleries/', newGallery).subscribe(res => {
+    this.galleries = res;
+    this.dataChangedSubject.next(true);
+  });
   }
 
   async addPhoto(galleryID, name, description) {
-    this.imgID += 1;
-
     const tempImage = await this.camera.getPicture(this.options);
 
     // Get file name of temp image 
@@ -189,7 +107,8 @@ export class GalleryService {
 
     //Remove spaces from name to insert into filename 
     name = name.replace(/\s/g, '')
-    const newFileName = name + this.imgID + fileExt;
+    let randInt = Math.floor(Math.random() * Math.floor(10000000))
+    const newFileName = name + randInt + fileExt;
 
     await this.file.copyFile(tempBaseFilesystemPath, tempFilename, 
       newBaseFilesystemPath, newFileName);
@@ -199,7 +118,6 @@ export class GalleryService {
     
 
     let newPhoto = {
-      imgID: this.imgID,
       imgName: name,
       imgDate: "August 22, 2019",
       imgDescription: description,

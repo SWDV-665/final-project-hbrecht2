@@ -10,16 +10,24 @@ import { GalleryService } from './gallery.service';
 export class HomePage implements OnInit{
   Title = "QuikPik"
   LogoSrc = "../assets/quikpiklogo.png"
-  galleries = []; 
+  galleries: any  = []; 
+  errorMessage: string;
 
-  constructor(public alertController: AlertController, private galleryService: GalleryService) {}
-
-  loadGalleries(){
-    return this.galleryService.getAllGalleries();
+  constructor(public alertController: AlertController, private galleryService: GalleryService) {
+    galleryService.dataChanged$.subscribe((dataChanged: boolean)=>{
+      this.loadGalleries();
+    });
   }
 
-  openGallery(){
-    console.log("gallery");
+  ionViewDidLoad(){
+    this.loadGalleries();
+  }
+
+  loadGalleries(){
+    this.galleryService.getAllGalleries()
+    .subscribe(
+      galleries => this.galleries = galleries,
+      error => this.errorMessage = <any>error);
   }
 
   async addGalleryPrompt() {
@@ -46,10 +54,11 @@ export class HomePage implements OnInit{
     await alert.present();
   }
 
-  deleteGallery(index){
-    this.galleryService.deleteGallery(index);
+  deleteGallery(id){
+    this.galleryService.deleteGallery(id);
   }
 
   ngOnInit() {
+    this.loadGalleries();
   }
 }

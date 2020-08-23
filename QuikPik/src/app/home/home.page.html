@@ -7,17 +7,22 @@
 
 <ion-content [fullscreen]="true">
 
+  <!-- Check if galleries are present -->
+  <h3 class="ion-text-center pageTitle" *ngIf="galleries.length === 0">
+    There are no galleries here. Add one to get started!
+  </h3>
+
   <!-- Photo Gallery List of Sliding Items -->
   <ion-list class="ion-no-padding">
-    <ion-item-sliding *ngFor="let gallery of loadGalleries(); let i = index;">
-      <ion-item lines="full" [routerLink]="['./', gallery.id]">
+    <ion-item-sliding *ngFor="let gallery of galleries; let i = index;">
+      <ion-item lines="full" [routerLink]="['./', gallery._id]">
         <ion-thumbnail slot="start">
           <ion-img [src]="gallery.src"></ion-img>
         </ion-thumbnail>
         <h6> {{ gallery.name }}</h6>
       </ion-item>
       <ion-item-options side="end">
-        <button (click)="deleteGallery(i)" ion-button icon-start>
+        <button (click)="deleteGallery(gallery._id)" ion-button icon-start>
           <ion-icon name="trash"></ion-icon>
           Delete
         </button>
