@@ -21,12 +21,12 @@ export class GalleryPage implements OnInit {
       inputs:[{
           name: 'imgName',
           type: 'text',
-          placeholder: 'What should we title this photo?'
+          placeholder: 'Image Name'
         }, 
         {
           name: 'imgDescription',
           type: 'text',
-          placeholder: 'What was going on in this photo?'
+          placeholder: 'Description'
         }],
       buttons: [
         {
@@ -35,7 +35,7 @@ export class GalleryPage implements OnInit {
         }, {
           text: 'Add Photo',
           handler: (photoInfo) => {
-            this.galleryService.addPhoto(galleryID, photoInfo['name'], photoInfo['description']);
+            this.galleryService.addPhoto(galleryID, photoInfo['imgName'], photoInfo['imgDescription']);
           }
         }
       ]

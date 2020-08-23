@@ -1,7 +1,7 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-img class="logo" [src]="LogoSrc" slot="start"></ion-img>
-    <ion-title class="pageTitle"> {{ Title }} </ion-title>
+    <h1 class="pageTitle" slot="start"> {{ Title }} </h1>
   </ion-toolbar>
 </ion-header>
 
@@ -14,7 +14,7 @@
         <ion-thumbnail slot="start">
           <ion-img [src]="gallery.src"></ion-img>
         </ion-thumbnail>
-        <h2> {{ gallery.name }}</h2>
+        <h6> {{ gallery.name }}</h6>
       </ion-item>
       <ion-item-options side="end">
         <button (click)="deleteGallery(i)" ion-button icon-start>

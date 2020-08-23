@@ -1,0 +1,37 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref='home/{{loadedGallery.id}}' text=""></ion-back-button>
+    </ion-buttons>
+    <ion-title> {{loadedGallery.name}} </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-slides pager="true" [options]="slideOpts">
+    <ion-slide *ngFor="let image of loadedGallery.contents; let i = index;">
+      <div class="slide-item" text-left>
+        <ion-img [src]="image.imgSrc"></ion-img>
+        <ion-grid>
+          <ion-row>
+            <ion-col size="5">Name: </ion-col>
+            <ion-col size="7"> {{ image.imgName }} </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col size="5">Date: </ion-col>
+            <ion-col size="7"> {{ image.imgDate }} </ion-col>
+          </ion-row>
+          <ion-row>
+          <ion-row>
+            <ion-col size=12></ion-col>
+          </ion-row>
+            <ion-col size="12">Description:</ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col size="12"> {{ image.imgDescription }}</ion-col>
+          </ion-row>
+        </ion-grid>
+      </div>
+    </ion-slide>
+  </ion-slides>
+</ion-content>

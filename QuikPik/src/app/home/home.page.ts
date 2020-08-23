@@ -35,7 +35,7 @@ export class HomePage implements OnInit{
           text: 'Cancel',
           role: 'cancel',
         }, {
-          text: 'Add Item',
+          text: 'Add Gallery',
           handler: (gallery) => {
             this.galleryService.addGallery(gallery['name']);
           }
