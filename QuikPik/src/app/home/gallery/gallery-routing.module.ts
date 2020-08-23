@@ -9,7 +9,7 @@ const routes: Routes = [
     component: GalleryPage
   },
   {
-    path: ':imageID',
+    path: ':imageIndex',
     loadChildren: () => import('./image-details/image-details.module').then( m => m.ImageDetailsPageModule)
   }
 ];

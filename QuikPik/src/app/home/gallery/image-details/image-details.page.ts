@@ -11,22 +11,23 @@ import { GalleryPage } from '../gallery.page';
 })
 export class ImageDetailsPage {
 
-  slideOpts = {
-    initialSlide: 1,
-    speed: 400
-  };
-
   loadedGallery: any;
+  imageIndex: any;
+  options: any;
 
   constructor(private activatedRoute: ActivatedRoute, private galleryService: GalleryService) {}
 
   ngOnInit() {
     this.activatedRoute.paramMap.subscribe(paramMap =>{
       const galleryID = paramMap.get('galleryID');
-      const imageID = paramMap.get('imageID');
+      this.imageIndex = paramMap.get('imageIndex');
       this.loadedGallery = this.galleryService.getGallery(galleryID);
-      console.log(this.loadedGallery)
     })
-  }
 
-}
+    this.options = {
+      initialSlide: this.imageIndex,
+      speed: 400,
+    };
+    }
+
+  }

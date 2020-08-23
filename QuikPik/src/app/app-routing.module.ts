@@ -17,7 +17,7 @@ const routes: Routes = [
         loadChildren: () => import('./home/gallery/gallery.module').then( m => m.GalleryPageModule)
       },
       {
-        path: ':galleryID:imageID',
+        path: ':galleryID:imageIndex',
         loadChildren: () => import('./home/gallery/image-details/image-details.module').then( m => m.ImageDetailsPageModule)
       }
     ]

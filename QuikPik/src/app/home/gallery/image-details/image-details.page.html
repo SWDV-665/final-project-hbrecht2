@@ -3,12 +3,12 @@
     <ion-buttons slot="start">
       <ion-back-button defaultHref='home/{{loadedGallery.id}}' text=""></ion-back-button>
     </ion-buttons>
-    <ion-title> {{loadedGallery.name}} </ion-title>
+    <h1 class="pageTitle"> {{loadedGallery.name}} </h1>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <ion-slides pager="true" [options]="slideOpts">
+  <ion-slides pager="true" [options]="options">
     <ion-slide *ngFor="let image of loadedGallery.contents; let i = index;">
       <div class="slide-item" text-left>
         <ion-img [src]="image.imgSrc"></ion-img>

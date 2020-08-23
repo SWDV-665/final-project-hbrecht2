@@ -32,6 +32,70 @@ export class GalleryService {
           imgSrc:
             "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQjgiaMX8VUHR1J58eHJhD41sn4fETYnJogDQ&usqp=CAU",
         },
+        {
+          imgID: 2,
+          imgName: "Sunflower 3",
+          imgDate: "July 29, 2020",
+          imgDescription: "Trip to sunflower field in July of 2020",
+          imgSrc:
+            "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQjgiaMX8VUHR1J58eHJhD41sn4fETYnJogDQ&usqp=CAU",
+        },
+        {
+          imgID: 2,
+          imgName: "Sunflower 4",
+          imgDate: "July 29, 2020",
+          imgDescription: "Trip to sunflower field in July of 2020",
+          imgSrc:
+            "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQjgiaMX8VUHR1J58eHJhD41sn4fETYnJogDQ&usqp=CAU",
+        },
+        {
+          imgID: 2,
+          imgName: "Sunflower 5",
+          imgDate: "July 29, 2020",
+          imgDescription: "Trip to sunflower field in July of 2020",
+          imgSrc:
+            "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQjgiaMX8VUHR1J58eHJhD41sn4fETYnJogDQ&usqp=CAU",
+        },
+        {
+          imgID: 2,
+          imgName: "Sunflower 6",
+          imgDate: "July 29, 2020",
+          imgDescription: "Trip to sunflower field in July of 2020",
+          imgSrc:
+            "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQjgiaMX8VUHR1J58eHJhD41sn4fETYnJogDQ&usqp=CAU",
+        },
+        {
+          imgID: 2,
+          imgName: "Sunflower 7",
+          imgDate: "July 29, 2020",
+          imgDescription: "Trip to sunflower field in July of 2020",
+          imgSrc:
+            "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQjgiaMX8VUHR1J58eHJhD41sn4fETYnJogDQ&usqp=CAU",
+        },
+        {
+          imgID: 2,
+          imgName: "Sunflower 8",
+          imgDate: "July 29, 2020",
+          imgDescription: "Trip to sunflower field in July of 2020",
+          imgSrc:
+            "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQjgiaMX8VUHR1J58eHJhD41sn4fETYnJogDQ&usqp=CAU",
+        },
+        {
+          imgID: 2,
+          imgName: "Sunflower 9",
+          imgDate: "July 29, 2020",
+          imgDescription: "Trip to sunflower field in July of 2020",
+          imgSrc:
+            "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQjgiaMX8VUHR1J58eHJhD41sn4fETYnJogDQ&usqp=CAU",
+        },
+        {
+          imgID: 2,
+          imgName: "Sunflower 10",
+          imgDate: "July 29, 2020",
+          imgDescription: "Trip to sunflower field in July of 2020",
+          imgSrc:
+            "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQjgiaMX8VUHR1J58eHJhD41sn4fETYnJogDQ&usqp=CAU",
+        }
       ],
     },
   ];
@@ -79,6 +143,14 @@ export class GalleryService {
         return gallery.id == galleryID;
       }),
     };
+  }
+
+  searchGallery(searchTerm, galleryID){
+    const gallery = this.galleries.find(gallery => gallery.id == galleryID);
+
+    return gallery.contents.filter(photo => {
+      return photo.imgName.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1;
+    })
   }
 
   deleteGallery(index) {

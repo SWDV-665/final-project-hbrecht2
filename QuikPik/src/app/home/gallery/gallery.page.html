@@ -8,13 +8,15 @@
 </ion-header>
 
 <ion-content>
-  <ion-searchbar inputmode="search"></ion-searchbar>
+  <ion-searchbar debounce="700" 
+  [(ngModel)]="searchTerm" (ionChange)="setSearchedPhotos(searchTerm)" >
+  </ion-searchbar>
 
   <ion-grid >
     <ion-row>
       <ion-col size="4" 
       *ngFor="let photo of loadedGallery.contents; let i = index">
-        <ion-img src="{{ photo.imgSrc }}" [routerLink]="['./', photo.imgID]" ></ion-img>
+        <ion-img src="{{ photo.imgSrc }}" [routerLink]="['./', i]" ></ion-img>
     </ion-col>
     </ion-row>
   </ion-grid>

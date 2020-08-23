@@ -9,9 +9,12 @@ import { AlertController } from '@ionic/angular';
   styleUrls: ['./gallery.page.scss'],
 })
 export class GalleryPage implements OnInit {
+  public searchTerm = "";
+  galleryID: any;
   loadedGallery: any;
 
-  constructor(private activatedRoute: ActivatedRoute, private galleryService: GalleryService, private alertController: AlertController) { }
+  constructor(private activatedRoute: ActivatedRoute, private galleryService: GalleryService, private alertController: AlertController) { 
+  }
 
 
   async addPhotoPrompt(galleryID) {
@@ -44,11 +47,18 @@ export class GalleryPage implements OnInit {
     await alert.present();
   }
 
+
   ngOnInit() {
     this.activatedRoute.paramMap.subscribe(paramMap =>{
-      const galleryID = paramMap.get('galleryID');
-      this.loadedGallery = this.galleryService.getGallery(galleryID);
+      this.galleryID = paramMap.get('galleryID');
+      this.loadedGallery = this.galleryService.getGallery(this.galleryID);
     })
+
+    this.setSearchedPhotos(this.searchTerm)
+  }
+
+  setSearchedPhotos(searchTerm) {
+    this.loadedGallery = this.galleryService.searchGallery(searchTerm, this.galleryID);
   }
 
 }
